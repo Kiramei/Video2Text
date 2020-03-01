@@ -42,7 +42,8 @@ public class V2T{
 		org.bytedeco.javacv.Frame fr = null;
 		List<File> fs = new ArrayList<>();
 		try {
-			FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(new File(getFilePath()));
+			File f=new File(getFilePath());
+			FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(f);
 			getAudio();
 			String filePath = ".\\output\\text_row\\";
 			String fileTargetName = "get";
@@ -67,7 +68,6 @@ public class V2T{
 			new File(".\\output\\msc\\Audinfo.mp3").delete();
 			Compress.comp();
 		} catch (Exception e) {
-			e.printStackTrace();
 			System.exit(0);
 		}
 		return fs;

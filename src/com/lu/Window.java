@@ -74,11 +74,14 @@ public class Window extends JFrame {
 }
 class Del{
 	public Del() {
-		for (File i : new File("output\\msc").listFiles())
-			i.delete();
-		for (File i : new File("output\\text_row").listFiles())
-			i.delete();
-		for (File i : new File("output\\config").listFiles())
-			i.delete();
+		if(new File("output\\msc").listFiles()!=null)
+			for (File i : new File("output\\msc").listFiles())
+				i.delete();
+		if(new File("output\\text_row").listFiles()!=null)
+			for (File i : new File("output\\text_row").listFiles())
+				i.delete();
+		if(new File("output\\config").listFiles()!=null)
+			for (File i : new File("output\\config").listFiles())
+				i.delete();
 	}
 }
