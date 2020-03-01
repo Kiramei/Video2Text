@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="libs/ffmpeg-windows-x86_64.jar"/>
+	<classpathentry kind="lib" path="libs/ffmpeg.jar" sourcepath="C:/Users/WIN10/Downloads/javacv-platform-1.5-src.zip"/>
+	<classpathentry kind="lib" path="libs/javacpp.jar"/>
+	<classpathentry kind="lib" path="libs/javacv.jar" sourcepath="C:/Users/WIN10/Downloads/javacv-platform-1.5-src.zip"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="Video2Text/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="libs/jna-5.3.1.jar"/>
+	<classpathentry kind="lib" path="libs/jna-platform-5.3.1.jar"/>
+	<classpathentry kind="lib" path="libs/jave-1.0.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
