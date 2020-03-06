@@ -14,6 +14,10 @@ public class Window extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	public Window() {
+		String nece[] = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
+		File f;
+		for (String e : nece) if (!(f = new File(e)).exists()) f.mkdir();
+
 		Runtime.getRuntime().addShutdownHook(new Thread() {
 			@Override
 			public void run() {
