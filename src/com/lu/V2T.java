@@ -21,9 +21,6 @@ import javax.swing.filechooser.FileSystemView;
 import org.bytedeco.javacv.FFmpegFrameGrabber;
 import org.bytedeco.javacv.Java2DFrameConverter;
 import org.bytedeco.javacv.Frame;
-import it.sauronsoftware.jave.Encoder;
-import it.sauronsoftware.jave.AudioAttributes;
-import it.sauronsoftware.jave.EncodingAttributes;
 
 public class V2T{
 	private static String path = null;
@@ -38,13 +35,18 @@ public class V2T{
 	}
 
 	private static List<File> v2p() {
+		File f=new File(getFilePath());
+		new Thread(){
+			@Override
+			public void run() {
+				getAudio();
+			}
+		}.start();
 		new Del();
-		org.bytedeco.javacv.Frame fr = null;
+		org.bytedeco.javacv.Frame fr;
 		List<File> fs = new ArrayList<>();
 		try {
-			File f=new File(getFilePath());
 			FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(f);
-			getAudio();
 			String filePath = ".\\output\\text_row\\";
 			String fileTargetName = "get";
 			ffg.start();
@@ -59,10 +61,8 @@ public class V2T{
 					break;
 				p2t(filePath + fileTargetName + "_" + i + "." + "jpg", i);
 				new File(filePath + fileTargetName + "_" + i + "." + "jpg").delete();
-				System.out.println("正在处理：\t"+(i+1)+"帧\t/\t"+(ftp-2)+"帧");
+				System.out.println(filePath + fileTargetName + "_" + i + "." + "jpg");
 			}
-			
-			
 			ffg.stop();
 			ffg.close();
 			new File(".\\output\\msc\\Audinfo.mp3").delete();
@@ -176,24 +176,13 @@ public class V2T{
 	private static void getAudio() {
 		Runtime r = Runtime.getRuntime();
 		try {
-			Process p = r.exec(".\\source\\ffmpeg -i " + path + " .\\output\\msc\\Audinfo.mp3");
+			Process p = r.exec(".\\lib\\ffmpeg -i " + path + " -f wav -ar 16000 .\\output\\msc\\Audinfo.wav");
 			p.waitFor();
 			p.getOutputStream().close();
 			p.getInputStream().close();
 			p.getErrorStream().close();
-			AudioAttributes audio = new AudioAttributes();
-			audio.setCodec("pcm_alaw");
-			audio.setBitRate(new Integer(64000));
-			audio.setChannels(new Integer(1));
-			audio.setSamplingRate(new Integer(8000));
-			EncodingAttributes attrs = new EncodingAttributes();
-			attrs.setFormat("wav");
-			attrs.setAudioAttributes(audio);
-			Encoder encoder = new Encoder();
-			encoder.encode(new File(".\\output\\msc\\Audinfo.mp3"), new File(".\\output\\msc\\Audinfo.wav"), attrs);
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.exit(0);
 		}
 	}
 
