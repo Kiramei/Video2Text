@@ -1,71 +1,87 @@
 package com.lu;
-
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.io.File;
-import java.util.Objects;
+import javax.swing.*;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
+public class Window extends JFrame{
+    public Window() throws UnsupportedLookAndFeelException {
+        String[] string_arr = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
+        File f;
+        for (String e : string_arr) if (!(f = new File(e)).exists()) System.out.println(f.mkdir());
+        Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
+        initComponents();
+    }
 
-import static java.awt.Font.*;
+    private void initComponents() throws UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(new com.sun.java.swing.plaf.windows.WindowsLookAndFeel());
+        // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
+        // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+        JButton button1 = new JButton();
+        JButton button2 = new JButton();
+        JButton button3 = new JButton();
+        JLabel label1 = new JLabel();
+        progressBar1 = new JProgressBar();
+        info = new JLabel();
 
-public class Window extends JFrame {
+        //======== this ========
+        setBackground(Color.white);
+        setTitle("The Video2Text Tool");
+        var contentPane = getContentPane();
+        contentPane.setLayout(null);
 
-	private static final long serialVersionUID = 1L;
+        //---- button1 ----
+        button1.setText("Open");
+        button1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 26));
+        contentPane.add(button1);
+        button1.setBounds(70, 115, 305, 50);
 
-	public Window() {
-		String[] string_arr = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
-		File f;
-		for (String e : string_arr) if (!(f = new File(e)).exists()) System.out.println(f.mkdir());
+        //---- button2 ----
+        button2.setText("Create");
+        button2.setFont(new Font("Segoe UI Semibold", Font.BOLD, 26));
+        contentPane.add(button2);
+        button2.setBounds(70, 55, 305, 50);
 
-		Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
+        //---- button3 ----
+        button3.setText("Exit");
+        button3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 26));
+        contentPane.add(button3);
+        button3.setBounds(70, 180, 305, 50);
 
-		this.setBounds(600, 400, 400, 200);
-		this.setTitle("选择模式...");
-		this.setLayout(new GridLayout(3, 1, 0, 0));
+        //---- label1 ----
+        label1.setText("Video2Text Tool");
+        label1.setIcon(null);
+        label1.setFont(new Font("\u5e7c\u5706", Font.BOLD, 32));
+        label1.setHorizontalAlignment(SwingConstants.CENTER);
+        contentPane.add(label1);
+        label1.setBounds(85, 10, 275, 35);
+        contentPane.add(progressBar1);
+        progressBar1.setBounds(70, 250, 305, 25);
+        contentPane.add(info);
+        info.setBounds(70, 285, 305, 20);
 
-		JButton b1 = new JButton("创建字符画文件");
-		JButton b2 = new JButton("打开字符画文件");
-		JButton b3 = new JButton("退    出");
+        { // compute preferred size
+            Dimension preferredSize = new Dimension();
+            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+                Rectangle bounds = contentPane.getComponent(i).getBounds();
+                preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
+                preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
+            }
+            Insets insets = contentPane.getInsets();
+            preferredSize.width += insets.right;
+            preferredSize.height += insets.bottom;
+            contentPane.setMinimumSize(preferredSize);
+            contentPane.setPreferredSize(preferredSize);
+        }
+        button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info));
+        button3.addActionListener(actionEvent -> System.exit(0));
+        setSize(460, 355);
+        setLocationRelativeTo(getOwner());
+        this.setVisible(true);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        // JFormDesigner - End of component initialization  //GEN-END:initComponents
+    }
 
-		this.setVisible(true);
-		b1.setVisible(true);
-		b2.setVisible(true);
-		b3.setVisible(true);
-
-		this.add(b1);
-		this.add(b2);
-		this.add(b3);
-
-		b1.setFont(new Font("黑体", BOLD, 30));
-		b2.setFont(new Font("黑体", BOLD, 30));
-		b3.setFont(new Font("黑体", BOLD, 30));
-
-		b1.addActionListener(e -> V2T.v2t());
-
-		b2.addActionListener(e -> new Uncompress());
-		
-		b3.addActionListener(e -> {
-			new Del();
-			System.exit(0);
-		});
-		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	}
-}
-class Del{
-	public Del() {
-		boolean inr = false;
-		if(new File("output\\msc").listFiles()!=null)
-			for (File i : Objects.requireNonNull(new File("output\\msc").listFiles()))
-				inr=i.delete();
-		if(new File("output\\text_row").listFiles()!=null)
-			for (File i : Objects.requireNonNull(new File("output\\text_row").listFiles()))
-				inr=i.delete();
-		if(new File("output\\config").listFiles()!=null)
-			for (File i : Objects.requireNonNull(new File("output\\config").listFiles()))
-				inr=i.delete();
-		System.out.println(inr);
-	}
+    private JProgressBar progressBar1;
+    private JLabel info;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables
 }

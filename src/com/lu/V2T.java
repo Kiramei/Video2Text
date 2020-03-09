@@ -26,25 +26,26 @@ public class V2T {
     private static String path = null;
     private static int ftp;
     private static double fps;
+    private static boolean p;
 
     private V2T() {
     }
 
-    public static void v2t() {
-        v2p();
+    /**
+     * @param jLabel       The sending message path.
+     * @param jProgressBar The progress of the JProgressBar.
+     */
+    public static void v2t(JProgressBar jProgressBar, JLabel jLabel) {
+        v2p(jProgressBar, jLabel);
     }
 
-    private static void v2p() {
+    //The second pass.
+    private static void v2p(JProgressBar jProgressBar, JLabel jLabel) {
         new Del();
         File f = new File(Objects.requireNonNull(getFilePath()));
-        JFrame jf = new JFrame("正在制作中...");
-        jf.setSize(300, 200);
-        ProgressMonitor pgm = new ProgressMonitor(jf, "", "", 0, 100);
         new Thread(V2T::getAudio).start();
-
         List<File> fs = new ArrayList<>();
         new Thread(() -> {
-
             try {
                 Frame fr;
                 FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(f);
@@ -63,14 +64,16 @@ public class V2T {
                         break;
                     }
                     p2t(filePath + fileTargetName + "_" + i + "." + "jpg", i);
-                    System.out.println(new File(filePath + fileTargetName + "_" + i + "." + "jpg").delete());
-                    pgm.setProgress((int) ((double) i / ftp * 100));
-                    pgm.setNote("正在处理:"+i+"/"+ftp+"("+(int) ((double) i / ftp * 100) + "%)");
+                    p = new File(filePath + fileTargetName + "_" + i + "." + "jpg").delete();
+                    jProgressBar.setValue((int) ((double) i / ftp * 100));
+                    jLabel.setText("正在处理:" + i + "/" + ftp + "(" + (int) ((double) i / ftp * 100) + "%)");
                 }
+                System.out.println(p);
                 ffg.stop();
                 ffg.close();
                 Compress.comp();
-
+                jProgressBar.setValue(0);
+                jLabel.setText("");
             } catch (Exception e) {
                 System.exit(0);
             }
@@ -132,7 +135,7 @@ public class V2T {
         File output = new File(fileName);
         if (!output.exists())
             try {
-                System.out.println(output.createNewFile());
+                p = output.createNewFile();
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -154,15 +157,18 @@ public class V2T {
         final BufferedImage im = ImageIO.read(new File(path));// 调用javax.imageio.ImageIO.read方法返回BufferedImage类型的im来获取图片
         File ff = new File(".\\output\\text_row\\" + inset + ".txt");
         if (!ff.exists())
-            System.out.println(ff.createNewFile());
+            p = ff.createNewFile();
         // 创建输出文件
         BufferedWriter bfr = new BufferedWriter(new FileWriter(".\\output\\text_row\\" + inset + ".txt"));
         // 创建输出流对象
-        for (int y = 0; y < im.getHeight(); y +=  (im.getHeight() / 45)) {
+        double cross = (double) im.getHeight() / 45.0;
+        double row = (double) im.getWidth() / ((double) im.getWidth() / (double) im.getHeight() * 90.0);
+        System.out.println(row);
+        for (double y = 0; y < im.getHeight(); y += cross) {
             StringBuilder sbf = new StringBuilder();
             // 利用StringBuffer来存储每行输出字符，每输出一行清空
-            for (int x = 0; x < im.getWidth(); x += im.getWidth() / 160) {
-                final int pixel = im.getRGB(x, y);// 取到像素所在点的颜色
+            for (double x = 0; x < im.getWidth(); x += row) {
+                final int pixel = im.getRGB((int) x, (int) y);// 取到像素所在点的颜色
                 final int r = (pixel & 0xff0000) >> 16, g = (pixel & 0xff00) >> 8, b = pixel & 0xff;
                 final float grey = (0.299f * r + 0.578f * g + 0.114f * b);
                 // 取得像素的灰度值
@@ -173,7 +179,7 @@ public class V2T {
             bfr.newLine();// 换行继续输出
         }
         bfr.close();// 关闭输出流
-        System.out.println(ff.setReadOnly());
+        p = ff.setReadOnly();
     }
 
     private static void getAudio() {
@@ -201,7 +207,7 @@ public class V2T {
             String info = (ftp - 2) + "," + fps + "," + fw + "," + fh;
             File config = new File("output\\config\\config.log");
             if (!config.exists())
-                System.out.println(config.createNewFile());
+                p = config.createNewFile();
             BufferedWriter bfw = new BufferedWriter(new FileWriter(config));
             bfw.write(info);
             bfw.close();
