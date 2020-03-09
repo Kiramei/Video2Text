@@ -2,28 +2,24 @@ package com.lu;
 
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.Objects;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+
+import static java.awt.Font.*;
 
 public class Window extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
 	public Window() {
-		String nece[] = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
+		String[] string_arr = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
 		File f;
-		for (String e : nece) if (!(f = new File(e)).exists()) f.mkdir();
+		for (String e : string_arr) if (!(f = new File(e)).exists()) System.out.println(f.mkdir());
 
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				new Del();
-			}
-		});
+		Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
 
 		this.setBounds(600, 400, 400, 200);
 		this.setTitle("选择模式...");
@@ -42,35 +38,17 @@ public class Window extends JFrame {
 		this.add(b2);
 		this.add(b3);
 
-		b1.setFont(new Font("黑体", 1, 30));
-		b2.setFont(new Font("黑体", 1, 30));
-		b3.setFont(new Font("黑体", 1, 30));
+		b1.setFont(new Font("黑体", BOLD, 30));
+		b2.setFont(new Font("黑体", BOLD, 30));
+		b3.setFont(new Font("黑体", BOLD, 30));
 
-		b1.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				V2T.v2t();
-				b1.setEnabled(false);
-				b2.setEnabled(false);
-			}
-		});
+		b1.addActionListener(e -> V2T.v2t());
+
+		b2.addActionListener(e -> new Uncompress());
 		
-		b2.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				new Uncompress();
-				b1.setEnabled(false);
-				b2.setEnabled(false);
-			}
-		});
-		
-		b3.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (File i : new File(".\\output\\msc").listFiles())
-					i.delete();
-				System.exit(0);
-			}
+		b3.addActionListener(e -> {
+			new Del();
+			System.exit(0);
 		});
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -78,14 +56,16 @@ public class Window extends JFrame {
 }
 class Del{
 	public Del() {
+		boolean inr = false;
 		if(new File("output\\msc").listFiles()!=null)
-			for (File i : new File("output\\msc").listFiles())
-				i.delete();
+			for (File i : Objects.requireNonNull(new File("output\\msc").listFiles()))
+				inr=i.delete();
 		if(new File("output\\text_row").listFiles()!=null)
-			for (File i : new File("output\\text_row").listFiles())
-				i.delete();
+			for (File i : Objects.requireNonNull(new File("output\\text_row").listFiles()))
+				inr=i.delete();
 		if(new File("output\\config").listFiles()!=null)
-			for (File i : new File("output\\config").listFiles())
-				i.delete();
+			for (File i : Objects.requireNonNull(new File("output\\config").listFiles()))
+				inr=i.delete();
+		System.out.println(inr);
 	}
 }

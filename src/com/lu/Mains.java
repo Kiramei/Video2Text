@@ -1,8 +1,7 @@
 package com.lu;
 
-import java.io.File;
 
-public class Mainr {
+public class Mains {
 	public static void main(String[] args) {
 		new Window();
 	}

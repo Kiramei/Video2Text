@@ -12,33 +12,37 @@ import javax.swing.ProgressMonitorInputStream;
 
 public class Uncompress {
 	public Uncompress() {
+		new Del();
 		String rf = V2T.getFilePath2();
 		if ("".equals(rf) || rf == null)
 			return;
 		File file = new File(rf);
-		ZipInputStream zpin;
+		ZipInputStream zen;
+
 		try {
 			ProgressMonitorInputStream df = new ProgressMonitorInputStream(null, "’˝‘⁄‘ÿ»Î...", new FileInputStream(file));
 			ZipFile zpf = new ZipFile(file);
-			zpin = new ZipInputStream(df);
+			zen = new ZipInputStream(df);
 			ZipEntry en;
-			while (((en = zpin.getNextEntry()) != null) && !en.isDirectory()) {
+			boolean s = false;
+			while (((en = zen.getNextEntry()) != null) && !en.isDirectory()) {
 				File tem = new File(en.getName());
 				if (!tem.exists()) {
-					tem.getParentFile().mkdir();
+					s=tem.getParentFile().mkdir();
 					OutputStream ops = new FileOutputStream(tem);
 					InputStream in = zpf.getInputStream(en);
 
-					int co = 0;
+					int co;
 					while ((co = in.read()) != -1)
 						ops.write(co);
 					ops.close();
 					in.close();
 				}
-				zpin.closeEntry();
+				zen.closeEntry();
 			}
+			System.out.println(s);
 			df.close();
-			zpin.close();
+			zen.close();
 			zpf.close();
 			Reader.reading();
 		} catch (Exception e) {

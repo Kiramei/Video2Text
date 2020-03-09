@@ -19,7 +19,7 @@ public class Compress {
 	}
 
 	public static void comp() throws Exception {
-		int result = 0;
+		int result;
 		JFileChooser fc = new JFileChooser();
 		FileSystemView fsv = FileSystemView.getFileSystemView();
 		FileFilter ff = new FileNameExtensionFilter("CVP文件", "cvp");
@@ -30,8 +30,8 @@ public class Compress {
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		result = fc.showSaveDialog(fc);
 		if (JFileChooser.APPROVE_OPTION == result) {
-			Compress.toZip("output", new FileOutputStream("output.cvp"), true);
-			new File("output.cvp").renameTo(new File(fc.getSelectedFile().getPath() + ".cvp"));
+			Compress.toZip(new FileOutputStream("output.cvp"));
+			System.out.println(new File("output.cvp").renameTo(new File(fc.getSelectedFile().getPath() + ".cvp")));
 		}
 	}
 
@@ -67,21 +67,21 @@ public class Compress {
 					if (KeepDirStructure) {
 						// 注意：file.getName()前面需要带上父文件夹的名字加一斜杠,
 						// 不然最后压缩包中就不能保留原来的文件结构,即：所有文件都跑到压缩包根目录下了
-						compress(file, zos, name + "/" + file.getName(), KeepDirStructure);
+						compress(file, zos, name + "/" + file.getName(), true);
 					} else {
-						compress(file, zos, file.getName(), KeepDirStructure);
+						compress(file, zos, file.getName(), false);
 					}
 				}
 			}
 		}
 	}
 
-	private static void toZip(String srcDir, OutputStream out, boolean KeepDirStructure) throws RuntimeException {
+	private static void toZip(OutputStream out) throws RuntimeException {
 		ZipOutputStream zos = null;
 		try {
 			zos = new ZipOutputStream(out);
-			File sourceFile = new File(srcDir);
-			compress(sourceFile, zos, sourceFile.getName(), KeepDirStructure);
+			File sourceFile = new File("output");
+			compress(sourceFile, zos, sourceFile.getName(), true);
 		} catch (Exception e) {
 			throw new RuntimeException("zip error from ZipUtils", e);
 		} finally {
