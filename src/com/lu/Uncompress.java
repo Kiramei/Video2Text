@@ -7,6 +7,7 @@ import java.util.zip.ZipInputStream;
 import javax.swing.*;
 
 public class Uncompress {
+	private static boolean p;
 	public Uncompress(JProgressBar jpg) {
 		new Del();
 		String rf = V2T.getFilePath2();
@@ -14,9 +15,8 @@ public class Uncompress {
 			return;
 		File file = new File(rf);
 		class Progressbar extends FilterInputStream{
-			private int size=0;
+			private int size;
 			private int nread=0;
-
 			protected Progressbar(InputStream in) {
 				super(in);
 				try {
@@ -69,11 +69,11 @@ public class Uncompress {
 				ZipFile zpf = new ZipFile(file);
 				zen = new ZipInputStream(df);
 				ZipEntry en;
-				boolean s = false;
+				p = false;
 				while (((en = zen.getNextEntry()) != null) && !en.isDirectory()) {
 					File tem = new File(en.getName());
 					if (!tem.exists()) {
-						s=tem.getParentFile().mkdir();
+						p=tem.getParentFile().mkdir();
 						OutputStream ops = new FileOutputStream(tem);
 						InputStream in = zpf.getInputStream(en);
 
@@ -85,7 +85,7 @@ public class Uncompress {
 					}
 					zen.closeEntry();
 				}
-				System.out.println(s);
+				System.out.println(p);
 				df.close();
 				zen.close();
 				zpf.close();
@@ -97,5 +97,9 @@ public class Uncompress {
 			}
 		}).start();
 
+	}
+
+	public static boolean getP() {
+		return p;
 	}
 }

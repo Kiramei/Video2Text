@@ -43,7 +43,10 @@ public class V2T {
     private static void v2p(JProgressBar jProgressBar, JLabel jLabel) {
         new Del();
         jProgressBar.setMaximum(100);
-        File f = new File(Objects.requireNonNull(getFilePath()));
+        String receive = V2T.getFilePath();
+        if ("".equals(receive) || receive == null)
+            return;
+        File f = new File(Objects.requireNonNull(receive));
         new Thread(V2T::getAudio).start();
         List<File> fs = new ArrayList<>();
         new Thread(() -> {
@@ -69,7 +72,6 @@ public class V2T {
                     jProgressBar.setValue((int) ((double) i / ftp * 100));
                     jLabel.setText("正在处理:" + i + "/" + ftp + "(" + (int) ((double) i / ftp * 100) + "%)");
                 }
-                System.out.println(p);
                 ffg.stop();
                 ffg.close();
                 Compress.comp();
@@ -215,5 +217,8 @@ public class V2T {
             e.printStackTrace();
             System.exit(0);
         }
+    }
+    public boolean getP(){
+        return p;
     }
 }

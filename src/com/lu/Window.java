@@ -4,10 +4,11 @@ import java.io.File;
 import javax.swing.*;
 
 public class Window extends JFrame{
+    private static boolean p;
     public Window() throws UnsupportedLookAndFeelException {
         String[] string_arr = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
         File f;
-        for (String e : string_arr) if (!(f = new File(e)).exists()) System.out.println(f.mkdir());
+        for (String e : string_arr) if (!(f = new File(e)).exists()) p=f.mkdir();
         Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
         initComponents();
     }
@@ -81,6 +82,10 @@ public class Window extends JFrame{
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
+    }
+
+    public static boolean getP() {
+        return p;
     }
 
     private JProgressBar progressBar1;

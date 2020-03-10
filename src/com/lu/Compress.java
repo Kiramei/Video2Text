@@ -15,6 +15,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 public class Compress {
+	private static boolean p;
 	private Compress() {
 	}
 
@@ -31,7 +32,7 @@ public class Compress {
 		result = fc.showSaveDialog(fc);
 		if (JFileChooser.APPROVE_OPTION == result) {
 			Compress.toZip(new FileOutputStream("output.cvp"));
-			System.out.println(new File("output.cvp").renameTo(new File(fc.getSelectedFile().getPath() + ".cvp")));
+			p=new File("output.cvp").renameTo(new File(fc.getSelectedFile().getPath() + ".cvp"));
 		}
 	}
 
@@ -93,5 +94,9 @@ public class Compress {
 				}
 			}
 		}
+	}
+
+	public static boolean getP() {
+		return p;
 	}
 }
