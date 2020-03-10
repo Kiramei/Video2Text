@@ -72,11 +72,13 @@ public class Window extends JFrame{
             contentPane.setMinimumSize(preferredSize);
             contentPane.setPreferredSize(preferredSize);
         }
+        button1.addActionListener(actionEvent -> new Uncompress(progressBar1));
         button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info));
-        button3.addActionListener(actionEvent -> System.exit(0));
+        button3.addActionListener(actionEvent -> {new Del();System.exit(0);});
         setSize(460, 355);
         setLocationRelativeTo(getOwner());
-        this.setVisible(true);
+        setResizable(false);
+        setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }

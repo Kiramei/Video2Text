@@ -42,6 +42,7 @@ public class V2T {
     //The second pass.
     private static void v2p(JProgressBar jProgressBar, JLabel jLabel) {
         new Del();
+        jProgressBar.setMaximum(100);
         File f = new File(Objects.requireNonNull(getFilePath()));
         new Thread(V2T::getAudio).start();
         List<File> fs = new ArrayList<>();
@@ -163,7 +164,6 @@ public class V2T {
         // 创建输出流对象
         double cross = (double) im.getHeight() / 45.0;
         double row = (double) im.getWidth() / ((double) im.getWidth() / (double) im.getHeight() * 90.0);
-        System.out.println(row);
         for (double y = 0; y < im.getHeight(); y += cross) {
             StringBuilder sbf = new StringBuilder();
             // 利用StringBuffer来存储每行输出字符，每输出一行清空
