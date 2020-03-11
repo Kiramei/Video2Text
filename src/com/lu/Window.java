@@ -1,14 +1,16 @@
 package com.lu;
+
 import java.awt.*;
 import java.io.File;
 import javax.swing.*;
 
-public class Window extends JFrame{
+public class Window extends JFrame {
     private static boolean p;
+
     public Window() throws UnsupportedLookAndFeelException {
-        String[] string_arr = {".\\output",".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
+        String[] string_arr = {".\\output", ".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
         File f;
-        for (String e : string_arr) if (!(f = new File(e)).exists()) p=f.mkdir();
+        for (String e : string_arr) if (!(f = new File(e)).exists()) p = f.mkdir();
         Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
         initComponents();
     }
@@ -62,7 +64,7 @@ public class Window extends JFrame{
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
-            for(int i = 0; i < contentPane.getComponentCount(); i++) {
+            for (int i = 0; i < contentPane.getComponentCount(); i++) {
                 Rectangle bounds = contentPane.getComponent(i).getBounds();
                 preferredSize.width = Math.max(bounds.x + bounds.width, preferredSize.width);
                 preferredSize.height = Math.max(bounds.y + bounds.height, preferredSize.height);
@@ -73,9 +75,12 @@ public class Window extends JFrame{
             contentPane.setMinimumSize(preferredSize);
             contentPane.setPreferredSize(preferredSize);
         }
-        button1.addActionListener(actionEvent -> new Uncompress(progressBar1));
-        button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info));
-        button3.addActionListener(actionEvent -> {new Del();System.exit(0);});
+        button1.addActionListener(actionEvent -> new Uncompress(progressBar1,button1,button2));
+        button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info,button2,button1));
+        button3.addActionListener(actionEvent -> {
+            new Del();
+            System.exit(0);
+        });
         setSize(460, 355);
         setLocationRelativeTo(getOwner());
         setResizable(false);
