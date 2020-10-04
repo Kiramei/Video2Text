@@ -55,7 +55,7 @@ public class V2T {
                 jb1.setEnabled(false);
                 Frame fr;
                 FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(f);
-                String filePath = ".\\output\\text_row\\";
+                String filePath = ".\\output\\";
                 String fileTargetName = "get";
                 ffg.start();
                 fps = ffg.getVideoFrameRate();
@@ -164,11 +164,11 @@ public class V2T {
          */
         final String base = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,\\\"^`'. ";// 按照字符复杂程度定义常量字符串base
         final BufferedImage im = ImageIO.read(new File(path));// 调用javax.imageio.ImageIO.read方法返回BufferedImage类型的im来获取图片
-        File ff = new File(".\\output\\text_row\\" + inset + ".txt");
+        File ff = new File(".\\output\\" + inset + ".txt");
         if (!ff.exists())
             p = ff.createNewFile();
         // 创建输出文件
-        BufferedWriter bfr = new BufferedWriter(new FileWriter(".\\output\\text_row\\" + inset + ".txt"));
+        BufferedWriter bfr = new BufferedWriter(new FileWriter(".\\output\\" + inset + ".txt"));
         // 创建输出流对象
         double cross = (double) im.getHeight() / 45.0;
         double row = (double) im.getWidth() / ((double) im.getWidth() / (double) im.getHeight() * 90.0);
@@ -193,7 +193,7 @@ public class V2T {
     private static void getAudio() {
         Runtime r = Runtime.getRuntime();
         try {
-            Process p = r.exec(".\\lib\\ffmpeg -i " + path + " -f wav -ar 16000 .\\output\\msc\\Audinfo.wav");
+            Process p = r.exec(".\\lib\\ffmpeg -i \"" + path + "\" -f wav -ar 16000 .\\output\\Audinfo.wav");
             p.waitFor();
             p.getOutputStream().close();
             p.getInputStream().close();
@@ -205,7 +205,7 @@ public class V2T {
 
     private static void wrtLog() {
         try {
-            File f = new File("output\\text_row\\0.txt");
+            File f = new File("output\\0.txt");
             BufferedReader bfr = new BufferedReader(new FileReader(f));
             long j = bfr.readLine().length();
             long i = bfr.lines().count();
@@ -213,7 +213,7 @@ public class V2T {
             int fh = (int) i;
             bfr.close();
             String info = (ftp - 2) + "," + fps + "," + fw + "," + fh;
-            File config = new File("output\\config\\config.log");
+            File config = new File("output\\config.log");
             if (!config.exists())
                 p = config.createNewFile();
             BufferedWriter bfw = new BufferedWriter(new FileWriter(config));

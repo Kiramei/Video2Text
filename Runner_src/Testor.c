@@ -1,8 +1,8 @@
+#pragma comment(lib, "WINMM.LIB")
 #include<stdio.h>
 #include<stdlib.h>
 #include<windows.h>
 #include <mmsystem.h>
-#pragma comment(lib, "WINMM.LIB")
 #include<string.h>
 #include<time.h>
 int main() {
@@ -23,7 +23,7 @@ void progress(){
 	int i = 0, caf = 33;
 	FILE *fp;
 	clock_t stime = 0, ftime = 0;
-	char seat[] = "output\\text_row\\0.txt", p[50];
+	char seat[] = "output\\0.txt", p[50];
 	char string[25], fws[5], fhs[5];
 	char *ptr, *retptr;
 	char cm[30];
@@ -31,7 +31,7 @@ void progress(){
 	int ftp, fw, fh;
 	float fps;
 	FILE *fpt;
-	fpt = fopen("output\\config\\config.log", "r");
+	fpt = fopen("output\\config.log", "r");
 	fgets(cm, 30, fpt);
 	ptr = cm;
 	float fl[4];
@@ -56,7 +56,7 @@ void progress(){
 	printf("-----CVP ASCII art player-----\nPress Enter to play.\n");
 	getchar();
 	system("cls");
-	PlaySound("output\\msc\\Audinfo.wav", NULL, SND_FILENAME | SND_ASYNC);
+	PlaySound("output\\Audinfo.wav", NULL, SND_FILENAME | SND_ASYNC);
 	stime = clock();
 	int s = 0;
 	while (i < ftp) {
@@ -70,7 +70,7 @@ void progress(){
 			caf -= (int) (10 * fps * caf) % 10;
 		if (s % 100 == 0)
 			caf -= (int) (100 * fps * caf) % 10;
-		strcpy(seat, "output\\text_row\\");
+		strcpy(seat, "output\\");
 		itoa(i, string, 10);
 		strcat(seat, string);
 		strcat(seat, ".txt");
@@ -79,7 +79,7 @@ void progress(){
 			i++;
 			fp = fopen(seat, "r");
 			fread(buf, sizeof(buf), 1, fp);
-			buf[reso] = '\0';
+			buf[reso+1] = '\0';
 			fclose(fp);
 			fprintf(stdout, "%s\n\n", buf);
 			fprintf(stdout, "Frame:%d", i);
