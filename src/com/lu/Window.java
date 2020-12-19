@@ -8,9 +8,9 @@ public class Window extends JFrame {
     private static boolean p;
 
     public Window() throws UnsupportedLookAndFeelException {
-        String[] string_arr = {".\\output", ".\\output\\msc", ".\\output\\text_row", ".\\output\\config"};
+        String string = ".\\output";
         File f;
-        for (String e : string_arr) if (!(f = new File(e)).exists()) p = f.mkdir();
+        if (!(f = new File(string)).exists()) p = f.mkdir();
         Runtime.getRuntime().addShutdownHook(new Thread(Del::new));
         initComponents();
     }
@@ -19,7 +19,6 @@ public class Window extends JFrame {
         UIManager.setLookAndFeel(new com.sun.java.swing.plaf.windows.WindowsLookAndFeel());
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-        JButton button1 = new JButton();
         JButton button2 = new JButton();
         JButton button3 = new JButton();
         JLabel label1 = new JLabel();
@@ -29,14 +28,8 @@ public class Window extends JFrame {
         //======== this ========
         setBackground(Color.white);
         setTitle("The Video2Text Tool");
-        var contentPane = getContentPane();
+        Container contentPane = getContentPane();
         contentPane.setLayout(null);
-
-        //---- button1 ----
-        button1.setText("Open");
-        button1.setFont(new Font("Segoe UI Semibold", Font.BOLD, 26));
-        contentPane.add(button1);
-        button1.setBounds(70, 115, 305, 50);
 
         //---- button2 ----
         button2.setText("Create");
@@ -48,7 +41,7 @@ public class Window extends JFrame {
         button3.setText("Exit");
         button3.setFont(new Font("Segoe UI Semibold", Font.BOLD, 26));
         contentPane.add(button3);
-        button3.setBounds(70, 180, 305, 50);
+        button3.setBounds(70, 115, 305, 50);
 
         //---- label1 ----
         label1.setText("Video2Text Tool");
@@ -58,9 +51,9 @@ public class Window extends JFrame {
         contentPane.add(label1);
         label1.setBounds(85, 10, 275, 35);
         contentPane.add(progressBar1);
-        progressBar1.setBounds(70, 250, 305, 25);
+        progressBar1.setBounds(70, 180, 305, 25);
         contentPane.add(info);
-        info.setBounds(70, 285, 305, 20);
+        info.setBounds(70, 210, 305, 20);
 
         { // compute preferred size
             Dimension preferredSize = new Dimension();
@@ -75,13 +68,12 @@ public class Window extends JFrame {
             contentPane.setMinimumSize(preferredSize);
             contentPane.setPreferredSize(preferredSize);
         }
-        button1.addActionListener(actionEvent -> new Uncompress(progressBar1,button1,button2));
-        button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info,button2,button1));
+        button2.addActionListener(actionEvent -> V2T.v2t(progressBar1, info, button2));
         button3.addActionListener(actionEvent -> {
             new Del();
             System.exit(0);
         });
-        setSize(460, 355);
+        setSize(460, 280);
         setLocationRelativeTo(getOwner());
         setResizable(false);
         setVisible(true);

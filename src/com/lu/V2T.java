@@ -35,12 +35,12 @@ public class V2T {
      * @param jLabel       The sending message path.
      * @param jProgressBar The progress of the JProgressBar.
      */
-    public static void v2t(JProgressBar jProgressBar, JLabel jLabel,JButton jb,JButton jb1) {
-        v2p(jProgressBar, jLabel,jb,jb1);
+    public static void v2t(JProgressBar jProgressBar, JLabel jLabel, JButton jb) {
+        v2p(jProgressBar, jLabel, jb);
     }
 
     //The second pass.
-    private static void v2p(JProgressBar jProgressBar, JLabel jLabel,JButton jb,JButton jb1) {
+    private static void v2p(JProgressBar jProgressBar, JLabel jLabel, JButton jb) {
         new Del();
         jProgressBar.setMaximum(100);
         String receive = V2T.getFilePath();
@@ -52,7 +52,6 @@ public class V2T {
         new Thread(() -> {
             try {
                 jb.setEnabled(false);
-                jb1.setEnabled(false);
                 Frame fr;
                 FFmpegFrameGrabber ffg = new FFmpegFrameGrabber(f);
                 String filePath = ".\\output\\";
@@ -76,13 +75,12 @@ public class V2T {
                 }
                 ffg.stop();
                 ffg.close();
-                Compress.comp();
+                Save.saves();
                 File f1;
-                if ((f1=new File("output.cvp")).exists())p=f1.delete();
+                if ((f1 = new File("output.cvp")).exists()) p = f1.delete();
                 jProgressBar.setValue(0);
                 jLabel.setText("");
                 jb.setEnabled(true);
-                jb1.setEnabled(true);
             } catch (Exception e) {
                 System.exit(0);
             }
@@ -110,23 +108,6 @@ public class V2T {
                     return getFilePath();
                 }
             }
-            return path;
-        }
-        return null;
-    }
-
-    public static String getFilePath2() {
-        JFileChooser fc = new JFileChooser();
-        FileSystemView fsv = FileSystemView.getFileSystemView();
-        FileFilter ff = new FileNameExtensionFilter("工程文件(*.cvp)", "cvp");
-        fc.setFileFilter(ff);
-        fc.setCurrentDirectory(fsv.getHomeDirectory());
-        fc.setDialogTitle("请选择工程文件...");
-        fc.setApproveButtonText("确定");
-        fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        int result = fc.showOpenDialog(fc);
-        if (JFileChooser.APPROVE_OPTION == result) {
-            path = fc.getSelectedFile().getPath();
             return path;
         }
         return null;
