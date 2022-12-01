@@ -16,7 +16,7 @@ public class Window extends JFrame {
     }
 
     private void initComponents() throws UnsupportedLookAndFeelException {
-        UIManager.setLookAndFeel(new com.sun.java.swing.plaf.windows.WindowsLookAndFeel());
+        //UIManager.setLookAndFeel(new com.sun.java.swing.plaf.windows.WindowsLookAndFeel());
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
         JButton button2 = new JButton();
